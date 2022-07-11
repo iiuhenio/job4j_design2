@@ -31,15 +31,21 @@ import java.net.Socket;
 public class EchoServer {
     public static void main(String[] args) throws IOException {
         try (ServerSocket server = new ServerSocket(9000)) {
+            int client = 0;
             while (!server.isClosed()) {
                 Socket socket = server.accept();
+                System.out.println("Client accepted " + client++);
                 try (OutputStream out = socket.getOutputStream();
                      BufferedReader in = new BufferedReader(
                              new InputStreamReader(socket.getInputStream()))) {
                     out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
                     String str = in.readLine();
-                    if (str.contains("/?msg=Bye")) {
+                    if (str.contains("/?msg=Hello")) {
+                        out.write("Hello!".getBytes());
+                    } else if (str.contains("/?msg=Exit")) {
                         server.close();
+                    } else if (str.contains("/?msg=What")) {
+                        out.write("What".getBytes());
                     }
                     System.out.println(str);
                     out.flush();
