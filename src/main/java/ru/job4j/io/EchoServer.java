@@ -33,9 +33,9 @@ import org.slf4j.LoggerFactory;
  * программа должна снова получить объект socket.
  */
 public class EchoServer {
+    public static final Logger LOG = LoggerFactory.getLogger(EchoServer.class.getName());
 
     public static void main(String[] args) {
-        final Logger LOG = LoggerFactory.getLogger(UsageLog4j.class.getName());
         try (ServerSocket server = new ServerSocket(9000)) {
             int client = 0;
             while (!server.isClosed()) {
