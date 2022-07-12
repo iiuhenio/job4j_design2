@@ -56,8 +56,7 @@ public class EchoServer extends UsageLog4j {
                     out.flush();
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             LOG.error("Exception in log example", e);
         }
     }
