@@ -29,12 +29,13 @@ import org.slf4j.LoggerFactory;
  * Следующее условие говорит о том, что сервер работает, пока его принудительно не закроют
  * while (!server.isClosed()) {
  *
- * метод ассеpt принимает один запрос от клиента, чтобы отправить второй,
+ * метод accept() принимает один запрос от клиента, чтобы отправить второй,
  * программа должна снова получить объект socket.
  */
-public class EchoServer extends UsageLog4j {
+public class EchoServer {
 
     public static void main(String[] args) {
+        final Logger LOG = LoggerFactory.getLogger(UsageLog4j.class.getName());
         try (ServerSocket server = new ServerSocket(9000)) {
             int client = 0;
             while (!server.isClosed()) {
