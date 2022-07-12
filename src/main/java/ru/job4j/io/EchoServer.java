@@ -3,6 +3,10 @@ package ru.job4j.io;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.ErrorManager;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Сначала нужно создать сервер, в конструкторе указываем номер порта
@@ -28,8 +32,9 @@ import java.net.Socket;
  * метод ассеpt принимает один запрос от клиента, чтобы отправить второй,
  * программа должна снова получить объект socket.
  */
-public class EchoServer {
-    public static void main(String[] args) throws IOException {
+public class EchoServer extends UsageLog4j {
+
+    public static void main(String[] args) {
         try (ServerSocket server = new ServerSocket(9000)) {
             int client = 0;
             while (!server.isClosed()) {
@@ -51,6 +56,9 @@ public class EchoServer {
                     out.flush();
                 }
             }
+        }
+        catch (Exception e) {
+            LOG.error("Exception in log example", e);
         }
     }
 }
