@@ -14,25 +14,25 @@ import java.util.List;
  */
 public class Analizy {
     public void unavailable(String source, String target) {
-        boolean flag = true; // булин Флаг = тру
-        String start = null; // булин Старт = нулл
-        String end; // стринг Енд
-        List<String> status = new ArrayList<>(); // Коллекция Статус
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(source))) { // читаем Сурс
-            for (String line = bufferedReader.readLine(); line != null; line = bufferedReader.readLine()) { // читаем
-                String[] out = line.split(" "); // в массив типа стринг Аут записываем до пробела
-                if (flag && line.startsWith("400") || flag && line.startsWith("500")) { // если начинается с 400 или 500
-                    flag = false; // Флаг = фолс
-                    start = out[1]; // Стринг старт = Аут[1]
-                } else if (!flag && line.startsWith("200") || line.startsWith("300")) { //если Флаг-фолс и нач с 200
-                    flag = true; // флаг = тру
-                    end = out[1]; // Стринг енд = Аут[1]
-                    status.add(start + "; " + end); // добавляем в коллекцию Статус Старт + Енд
+        boolean flag = true;
+        String start = null;
+        String end;
+        List<String> status = new ArrayList<>();
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(source))) {
+            for (String line = bufferedReader.readLine(); line != null; line = bufferedReader.readLine()) {
+                String[] out = line.split(" ");
+                if (flag && line.startsWith("400") || flag && line.startsWith("500")) {
+                    flag = false;
+                    start = out[1];
+                } else if (!flag && line.startsWith("200") || line.startsWith("300")) {
+                    flag = true;
+                    end = out[1];
+                    status.add(start + "; " + end);
                 }
             }
             try (PrintWriter write = new PrintWriter(new BufferedOutputStream(new FileOutputStream(target)))) {
                 for (String s : status) {
-                    write.println(s); // записываем результаты Статус в Таргет
+                    write.println(s);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
