@@ -16,7 +16,7 @@ public class EvenNumberFile {
             StringBuilder text = new StringBuilder();
             int read;
             while ((read = in.read()) != -1) {
-                text.append((char) read); // преобразовывает read в  char и добавляет к text
+                text.append((char) read);
             }
 
             String[] lines = text.toString().split(System.lineSeparator());
