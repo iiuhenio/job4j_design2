@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /**
- * Разработайте программу Search, которая будет искать файлы только по определенному предикату.
+ * Разработайте программу Search, которая будет искать файлы только по определенному предикату
  */
 
 public class Search {
