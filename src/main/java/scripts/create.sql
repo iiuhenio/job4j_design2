@@ -24,6 +24,14 @@ create table users (
     role_id int references role(id)
 );
 
+create table item (
+    id serial primary key,
+    name text,
+    users_id int references users(id),
+    state_id int references state(id),
+    category_id int references category(id)
+);
+
 create table comments (
     id serial primary key,
     name text,
@@ -43,13 +51,7 @@ create table role_rules (
     role_id int references role(id)
 );
 
-create table item (
-    id serial primary key,
-    name text,
-    users_id int references users(id),
-    state_id int references state(id),
-    category_id int references category(id)
-);
+
 
 
 
