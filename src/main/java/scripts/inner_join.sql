@@ -1,4 +1,4 @@
-CREATE table presient (
+CREATE table presdient(
     id serial primary key,
     name text,
     surname text
