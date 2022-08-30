@@ -1,4 +1,4 @@
-CREATE table presdient(
+CREATE table president(
     id serial primary key,
     name text,
     surname text
