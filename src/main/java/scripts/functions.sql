@@ -58,8 +58,8 @@ $$
     declare
         result integer;
     begin
+		select into result id from products where id = p_id;
         delete from products where id = p_id;
-		select into result from products where id = p_id;
         return result;
     end;
 $$;
