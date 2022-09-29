@@ -19,6 +19,28 @@ public class TableEditor implements AutoCloseable {
         connection = null;
     }
 
+    private static Connection getConnection() throws Exception {
+        Class.forName("org.postgresql.Driver");
+        String url = "jdbc:postgresql://localhost:5432/idea_db";
+        String login = "postgres";
+        String password = "password";
+        return DriverManager.getConnection(url, login, password);
+    }
+
+    public static void main(String[] args) throws Exception {
+        try (Connection connection = getConnection()) {
+            try (Statement statement = connection.createStatement()) {
+                String sql = String.format(
+                        "create table if not exists demo_table(%s, %s);",
+                        "id serial primary key",
+                        "name text"
+                );
+                statement.execute(sql);
+                System.out.println(getTableScheme(connection, "demo_table"));
+            }
+        }
+    }
+
     public void createTable(String tableName) throws Exception {
             try (Statement statement = connection.createStatement()) {
                 String sql = String.format(
@@ -29,7 +51,6 @@ public class TableEditor implements AutoCloseable {
                 System.out.println(getTableScheme(connection, "tableName"));
             }
         }
-
 
     public void dropTable(String tableName) throws Exception {
         try (Statement statement = connection.createStatement()) {
@@ -54,7 +75,7 @@ public class TableEditor implements AutoCloseable {
         }
     }
 
-    public void dropColumn(String tableName, String columnName) throws Exception{
+    public void dropColumn(String tableName, String columnName) throws Exception {
         try (Statement statement = connection.createStatement()) {
             String sql = String.format(
                     "ALTER TABLE %s DROP COLUMN %s;",
@@ -78,7 +99,6 @@ public class TableEditor implements AutoCloseable {
             System.out.println(getTableScheme(connection, "tableName"));
         }
     }
-
 
     public static String getTableScheme(Connection connection, String tableName) throws Exception {
         var rowSeparator = "-".repeat(30).concat(System.lineSeparator());
