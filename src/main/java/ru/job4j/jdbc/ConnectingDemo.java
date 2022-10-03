@@ -7,6 +7,11 @@ import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * В этом уроке мы поговорим про JDBC.
+ * JDBC – это API, т.е. набор вспомогательных классов, которое позволяет работать с базами данных.
+ * Причем JDBC предоставляет единый интерфейс для работы с ними, ведь бывают различные базы данных.
+ */
 public class ConnectingDemo {
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         Config config = new Config("app.properties");
