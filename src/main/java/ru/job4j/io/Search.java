@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 
 /**
  * Разработайте программу Search, которая будет искать файлы только по определенному предикату
+ *
  */
 
 public class Search {

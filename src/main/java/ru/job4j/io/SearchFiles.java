@@ -9,10 +9,10 @@ import java.util.function.Predicate;
 
 public class SearchFiles implements FileVisitor<Path> {
 
-    List<Path> paths = new ArrayList<>();
-    Predicate<Path> condition;
+    private List<Path> paths = new ArrayList<>();
+    private Predicate<Path> condition;
 
-    List<Path> getPaths() {
+    public List<Path> getPaths() {
         return paths;
     }
 
@@ -42,5 +42,4 @@ public class SearchFiles implements FileVisitor<Path> {
     public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
         return FileVisitResult.CONTINUE;
     }
-
 }
