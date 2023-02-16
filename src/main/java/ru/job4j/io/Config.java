@@ -20,6 +20,7 @@ public class Config {
     }
 
     /**
+     * Реализуйте метод load() по аналогии с методом toString().
      * Метод load() - должен считать все ключи в карту values.
      * Важно в файле могут быть пустые строки и комментарии их нужно пропускать.
      *
@@ -38,6 +39,11 @@ public class Config {
         try (BufferedReader reader = new BufferedReader(new FileReader(this.path))) {
             while (reader.ready()) {
                 String param = reader.readLine().trim();
+                if (param.startsWith("=")
+                        || param.endsWith("=")
+                        || param.length() == 1) {
+                       throw new IllegalArgumentException();
+                   }
                 if (!"".equals(param) && !param.startsWith("#") && param.contains("=")) {
                     int delimPos = param.indexOf("=");
                     if (delimPos > 0 && delimPos < param.length() - 1) {
@@ -45,17 +51,23 @@ public class Config {
                         String value = param.substring(delimPos + 1);
                         values.put(name, value);
                     }
-                     }
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Реализуйте метод value(String key) он должен возвращать значение ключа.
+     */
     public String value(String key) {
         return values.get(key);
     }
 
+    /**
+     * Давайте переопределим метод toString() и выведем все содержимое файла.
+     */
     @Override
     public String toString() {
         StringJoiner out = new StringJoiner(System.lineSeparator());
@@ -70,5 +82,6 @@ public class Config {
     public static void main(String[] args) {
         Config cfg = new Config("./data/app.properties");
         System.out.println(cfg);
+        cfg.load();
     }
 }

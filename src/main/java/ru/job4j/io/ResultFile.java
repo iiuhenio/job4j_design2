@@ -18,7 +18,7 @@ public class ResultFile {
          * Файл будет создан в корне проекта
          * Любой ресурс должен быть закрыт, по этому используется конструкция try-with-resources
          */
-        try (FileOutputStream out = new FileOutputStream("result.txt")) {
+        try (FileOutputStream out = new FileOutputStream("data/result.txt")) {
 
             /*
              * для записи используется метод out.write
