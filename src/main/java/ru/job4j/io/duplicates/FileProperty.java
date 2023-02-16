@@ -7,6 +7,7 @@ import java.util.Objects;
  * которая описывается двумя свойствами: размером и именем.
  * Реализуем ее
  */
+
 public class FileProperty {
 
     private long size;
