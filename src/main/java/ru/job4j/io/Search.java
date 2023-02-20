@@ -29,10 +29,20 @@ public class Search {
     public static boolean validation(String[] args) {
         boolean rsl = true;
         File file = new File(args[0]);
-        if (!file.isDirectory() || !file.exists()
-                || !args[1].startsWith(".") || args[1].length() < 2
-                || args.length != 2) {
-            rsl = false;
+        if (args.length != 2) {
+            throw new IllegalArgumentException("There should be two parameters");
+        }
+        if (!file.isDirectory()) {
+            throw new IllegalArgumentException(String.format("Not directory %s", file.getAbsoluteFile()));
+        }
+        if (!file.exists()) {
+            throw new IllegalArgumentException(String.format("Not exist %s", file.getAbsoluteFile()));
+        }
+        if (!args[1].startsWith(".")) {
+            throw new IllegalArgumentException("Check file name");
+        }
+        if ((args[1].length() < 2)) {
+            throw new IllegalArgumentException("Check file name");
         }
         return rsl;
     }
