@@ -24,11 +24,16 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         FileProperty fileProp = new FileProperty(Files.size(file), file.getFileName().toString());
         if (mapFiles.containsKey(fileProp)) {
-            System.out.println(mapFiles.get(fileProp).toAbsolutePath());
-            System.out.println(file.toAbsolutePath());
+            print(file);
         } else {
             mapFiles.put(new FileProperty(Files.size(file), file.getFileName().toString()), file);
         }
         return super.visitFile(file, attrs);
+    }
+
+    public void print(Path file) throws IOException {
+        FileProperty fileProp = new FileProperty(Files.size(file), file.getFileName().toString());
+        System.out.println(mapFiles.get(fileProp).toAbsolutePath());
+        System.out.println(file.toAbsolutePath());
     }
 }
