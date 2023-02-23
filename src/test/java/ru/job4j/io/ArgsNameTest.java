@@ -44,21 +44,20 @@ class ArgsNameTest {
     }
 
     @Test
-    void wwhenValueDoesNotExist() {
+    void whenValueDoesNotExist() {
         assertThatThrownBy(() -> ArgsName.of(new String[]{"-key="}))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void whenThereIsNoEqualSign() {
-        assertThatThrownBy(() -> ArgsName.of(new String[]{"-key="}))
+        assertThatThrownBy(() -> ArgsName.of(new String[]{"-keyvalue"}))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void wwhenThereIsNoLine() {
+    void whenThereIsNoLine() {
         assertThatThrownBy(() -> ArgsName.of(new String[]{"key=value"}))
                 .isInstanceOf(IllegalArgumentException.class);
     }
-
 }

@@ -6,25 +6,17 @@ import java.util.Map;
 
 public class ArgsName {
 
-    /**
-     * Тут храним пары ключ-значение
-     */
     private final Map<String, String> values = new HashMap<>();
 
-    /**
-     * Тут получаем значение по ключу
-     */
     public String get(String key) {
-
-        return values.get(key);
+        ArgsName an = new ArgsName();
+        if (values.get(key) == null) {
+            throw new IllegalArgumentException("This value does not exist");
+        }
+      return values.get(key);
     }
 
-    /**
-     * Тут переделываем массив args в значения
-     */
     private void parse(String[] args) {
-        /* TODO parse args to values. */
-        System.out.println("Size: " + args.length);
         for (String arg : args) {
             String str = arg;
             StringBuilder sb = new StringBuilder(str);
@@ -33,6 +25,9 @@ public class ArgsName {
                 sb.deleteCharAt(0);
                 str = sb.toString();
             } else {
+                throw new IllegalArgumentException("There is no line");
+            }
+            if (!str.contains("=")) {
                 throw new IllegalArgumentException("There is no equal sign");
             }
 
@@ -50,21 +45,15 @@ public class ArgsName {
         values.forEach((key, value) -> System.out.println(key + " : " + value));
     }
 
-    /**
-     * Тут мы создаем объект класса, вызывем у него метод parse() и возвращаем его
-     */
     public static ArgsName of(String[] args) {
-        ArgsName names = new ArgsName(); /* создаем объект класса */
+        ArgsName names = new ArgsName();
         if (args.length == 0) {
             throw new IllegalArgumentException("There are no args");
         }
-        names.parse(args); /* вызываем метод parse() */
-        return names; /* возвращаем то что получилось, то есть значение */
+        names.parse(args);
+        return names;
     }
 
-    /**
-     * это просто метод Мейн
-     */
     public static void main(String[] args) {
        ArgsName jvm = ArgsName.of(new String[] {"-Xmx=512", "-encoding=UTF-8"});
        System.out.println(jvm.get("Xmx"));
