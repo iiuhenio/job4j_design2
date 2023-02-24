@@ -14,7 +14,7 @@ import java.sql.SQLException;
  */
 public class ConnectingDemo {
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
-        Config config = new Config("app.properties");
+        Config config = new Config("data/app.properties");
         config.load();
         Class.forName(config.value("driver"));
         String url = config.value("url");
