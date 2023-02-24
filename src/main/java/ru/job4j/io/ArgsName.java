@@ -9,40 +9,43 @@ public class ArgsName {
     private final Map<String, String> values = new HashMap<>();
 
     public String get(String key) {
-        ArgsName an = new ArgsName();
-        if (values.get(key) == null) {
+        String rsl = values.get(key);
+        if (rsl == null) {
             throw new IllegalArgumentException("This value does not exist");
         }
-      return values.get(key);
+      return rsl;
     }
 
     private void parse(String[] args) {
-        for (String arg : args) {
-            String str = arg;
+        for (String str : args) {
+
             StringBuilder sb = new StringBuilder(str);
 
-            if (str.startsWith("-")) {
-                sb.deleteCharAt(0);
-                str = sb.toString();
-            } else {
-                throw new IllegalArgumentException("There is no line");
-            }
             if (!str.contains("=")) {
                 throw new IllegalArgumentException("There is no equal sign");
             }
+            if (!str.startsWith("-")) {
+                throw new IllegalArgumentException("There is no line");
+            }
+            if (str.startsWith("-")) {
+                sb.deleteCharAt(0);
+                str = sb.toString();
+            }
 
             String[] args2 = str.split("=", 2);
-            values.put(args2[0], args2[1]);
 
+            if (args2.length != 2) {
+                throw new IllegalArgumentException("There should be two args");
+            }
             if (args2[0].isEmpty()) {
                 throw new IllegalArgumentException("There is no key");
             }
             if (args2[1].isEmpty()) {
                 throw new IllegalArgumentException("There is no value");
             }
+
+            values.put(args2[0], args2[1]);
         }
-        System.out.println("Сейчас в мапе вот что: ");
-        values.forEach((key, value) -> System.out.println(key + " : " + value));
     }
 
     public static ArgsName of(String[] args) {
