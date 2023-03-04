@@ -17,18 +17,25 @@ public class ConsoleChat {
         this.botAnswers = botAnswers;
     }
 
-    public void run() {
+    public void run() throws FileNotFoundException {
+        ConsoleChat cc = new ConsoleChat("./src/data/log.txt", "./src/data/text.txt");
+        List<String> list = new ArrayList<>();
         Scanner console = new Scanner(System.in);
         System.out.println("Введите любой символ для начала чата");
         String a = console.nextLine();
+        list.add(a);
         System.out.println("Чат начался!");
         while (!Objects.equals(a, "Some phrase")) {
             a = console.nextLine();
-            System.out.println(ConsoleChat.readPhrases().get((int) (Math.random() * 4)));
+            list.add(a);
+            String str = cc.readPhrases().get((int) (Math.random() * 4));
+            System.out.println(str);
+            list.add(str);
             if (Objects.equals(a, STOP)) {
                 System.out.println("Сейчас я буду молчать");
                 while (!Objects.equals(a, CONTINUE)) {
                     a = console.nextLine();
+                    list.add(a);
                     if (!Objects.equals(a, OUT)) {
                         break;
                     }
@@ -42,12 +49,16 @@ public class ConsoleChat {
             }
         }
         System.out.println("Чат завершен");
+        cc.saveLog(list);
+        for (String str : list) {
+            System.out.println(str);
+        }
     }
 
-    private static List<String> readPhrases() {
+    private List<String> readPhrases() {
         List<String> rsl = new ArrayList<>();
         String path1 = "./src/data/text.txt";
-        try (BufferedReader br = new BufferedReader(new FileReader(path1))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             while (br.ready()) {
                 rsl.add(br.readLine());
             }
@@ -62,7 +73,7 @@ public class ConsoleChat {
         System.setOut(out);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         ConsoleChat cc = new ConsoleChat("./src/data/log.txt", "./src/data/text.txt");
         cc.run();
     }
