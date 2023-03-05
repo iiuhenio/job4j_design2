@@ -64,7 +64,7 @@ public class ArgsName {
        ArgsName zip = ArgsName.of(new String[] {"-out=project.zip", "-encoding=UTF-8"});
        System.out.println(zip.get("out"));
 
-        ArgsName zip1 = ArgsName.of(new String[] {"-out=", "-encoding="});
+        ArgsName zip1 = ArgsName.of(new String[] {"-out=rr", "-encoding=ll"});
         System.out.println(zip1.get("out"));
     }
 }

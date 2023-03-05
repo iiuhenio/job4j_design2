@@ -3,7 +3,7 @@ package ru.job4j.io;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -50,17 +50,54 @@ public class Zip {
     }
 
     public static void main(String[] args) throws IOException {
+
         ArgsName argsName = ArgsName.of(args);
         Zip zip = new Zip();
+        List<File> sources;
+
+        /*
+         * Архивируем один файл:
+         */
         zip.packSingleFile(
               new File("./pom.xml"),
               new File(argsName.get("o"))
-      );
+        );
 
-       List<File> sources = new ArrayList<>();
-       Path file = Paths.get(argsName.get("d"));
+        /*
+         * Добавляем в коллекцию все файлы из категории
+         */
+        File dir = new File(argsName.get("d"));
+        File[] arrFiles = dir.listFiles();
+        assert arrFiles != null;
+        sources = Arrays.asList(arrFiles);
 
-       sources.add(Search.search(file, p -> p.toFile().getName().endsWith(argsName.get("-e"))));
-       zip.packFiles(sources, new File(argsName.get("-o")));
+        /*
+         * Выводим все что есть в коллекции сейчас:
+         */
+        System.out.println(sources.size());
+        for (File file1 : sources) {
+           System.out.println(file1);
+        }
+
+        /*
+         * находим файлы по нужному предикату:
+         */
+        System.out.println("Находим файл:");
+        Path file2 = Paths.get(argsName.get("d"));
+        Search.search(file2, p -> p.toFile().getName().endsWith(argsName.get("e"))).forEach(System.out::println);
+
+        /*
+         * Смотрим, изменилась ли коллекция:
+         */
+        System.out.println("После удаления");
+        for (File file1 : sources) {
+            System.out.println(file1);
+        }
+
+        /*
+         * Архивируем коллекцию:
+         */
+        zip.packFiles(sources, new File(argsName.get("o")));
+
     }
 }
