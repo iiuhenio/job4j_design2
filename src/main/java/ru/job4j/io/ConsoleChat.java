@@ -1,9 +1,7 @@
 package ru.job4j.io;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.util.*;
-import java.util.logging.Level;
 
 public class ConsoleChat {
     private static final String OUT = "закончить";
@@ -11,54 +9,41 @@ public class ConsoleChat {
     private static final String CONTINUE = "продолжить";
     private final String path;
     private final String botAnswers;
+    private final List<String> log = new ArrayList<>();
 
     public ConsoleChat(String path, String botAnswers) {
         this.path = path;
         this.botAnswers = botAnswers;
     }
 
-    public void run() throws FileNotFoundException {
-        ConsoleChat cc = new ConsoleChat("./src/data/log.txt", "./src/data/text.txt");
-        List<String> list = new ArrayList<>();
+    public void run() {
+        ConsoleChat cc = new ConsoleChat(path, botAnswers);
         Scanner console = new Scanner(System.in);
         System.out.println("Введите любой символ для начала чата");
         String a = console.nextLine();
-        list.add(a);
+        log.add(a);
         System.out.println("Чат начался!");
-        while (!Objects.equals(a, "Some phrase")) {
-            a = console.nextLine();
-            list.add(a);
-            String str = cc.readPhrases().get((int) (Math.random() * 4));
-            System.out.println(str);
-            list.add(str);
+        while (!Objects.equals(a, OUT)) {
             if (Objects.equals(a, STOP)) {
                 System.out.println("Сейчас я буду молчать");
                 while (!Objects.equals(a, CONTINUE)) {
                     a = console.nextLine();
-                    list.add(a);
-                    if (!Objects.equals(a, OUT)) {
-                        break;
-                    }
+                    log.add(a);
                 }
             }
-            if (Objects.equals(a, CONTINUE)) {
-                System.out.println("Продолжаем чат!");
-            }
-            if (Objects.equals(a, OUT)) {
-                break;
-            }
+            String str = cc.readPhrases().get((int) (Math.random() * 4));
+            System.out.println(str);
+            log.add(str);
+            a = console.nextLine();
+            log.add(a);
         }
         System.out.println("Чат завершен");
-        cc.saveLog(list);
-        for (String str : list) {
-            System.out.println(str);
-        }
+        cc.saveLog(log);
     }
 
     private List<String> readPhrases() {
         List<String> rsl = new ArrayList<>();
-        String path1 = "./src/data/text.txt";
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(botAnswers))) {
             while (br.ready()) {
                 rsl.add(br.readLine());
             }
@@ -68,9 +53,15 @@ public class ConsoleChat {
         return rsl;
     }
 
-    private void saveLog(List<String> log) throws FileNotFoundException {
-        PrintStream out = new PrintStream(new FileOutputStream("./src/data/log.txt"));
-        System.setOut(out);
+    private void saveLog(List<String> log) {
+        try {
+            PrintStream pw = new PrintStream(new FileOutputStream(path));
+            for (String str : log) {
+                pw.println(str);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) throws FileNotFoundException {
