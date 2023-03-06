@@ -54,8 +54,7 @@ public class ConsoleChat {
     }
 
     private void saveLog(List<String> log) {
-        try {
-            PrintStream pw = new PrintStream(new FileOutputStream(path));
+        try (PrintStream pw = new PrintStream(new FileOutputStream(path))) {
             for (String str : log) {
                 pw.println(str);
             }
