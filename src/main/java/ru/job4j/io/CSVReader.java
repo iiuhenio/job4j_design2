@@ -11,7 +11,6 @@ public class CSVReader {
     public static void handle(ArgsName argsName) throws Exception {
 
         String[] filter = argsName.get("filter").split(",");
-        String[] names = new String[4];
         List<String> lines = new ArrayList<>();
         File source = new File(new File(argsName.get("path")).getAbsolutePath());
         File target = new File(new File(argsName.get("out")).getAbsolutePath());
@@ -19,7 +18,7 @@ public class CSVReader {
         try (FileReader fileReader = new FileReader(source);
              var scan = new Scanner(fileReader).useDelimiter(",");
              Scanner scanner = new Scanner(fileReader)) {
-             names = scan.next().replaceAll("\"", "").split(";");
+             String[] names = scan.next().replaceAll("\"", "").split(";");
              while (scan.hasNext()) {
                  lines.add(scan.next());
              }
