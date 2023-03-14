@@ -1,6 +1,7 @@
 package ru.job4j.io;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.sql.Array;
 import java.util.*;
 
@@ -12,23 +13,42 @@ public class CSVReader {
 
         String[] filter = argsName.get("filter").split(",");
         List<String> lines = new ArrayList<>();
-        File source = new File(new File(argsName.get("path")).getAbsolutePath());
-        File target = new File(new File(argsName.get("out")).getAbsolutePath());
+        File source = Path.of(argsName.get("path")).toFile();
+        File target = Path.of(argsName.get("out")).toFile();
 
         try (FileReader fileReader = new FileReader(source);
-             var scan = new Scanner(fileReader).useDelimiter(",");
+             /* var scan = new Scanner(fileReader).useDelimiter(","); */
              Scanner scanner = new Scanner(fileReader)) {
-             String[] names = scan.next().replaceAll("\"", "").split(";");
-             while (scan.hasNext()) {
-                 lines.add(scan.next());
+             String[] names = scanner.nextLine().replaceAll("\"", "").split(argsName.get("delimiter"));
+             while (scanner.hasNext()) {
+                lines.add(scanner.next());
              }
 
-             for (String str1 : names) {
-                 System.out.println(str1);
-             }
-             for (String str1 : lines) {
-                 System.out.print(str1);
-             }
+            Integer[] position = new Integer[names.length];
+            for (int i = 0; i < names.length; i++) {
+                for (int j = 0; j < filter.length; j++) {
+                    if (Objects.equals(names[i], filter[j])) {
+                        position[i] = i;
+                    }
+                }
+
+                System.out.println("Массив filter: ");
+                for (String str1 : filter) {
+                    System.out.println(str1);
+                }
+                System.out.println("Массив names: ");
+                for (String str1 : names) {
+                    System.out.println(str1);
+                }
+                System.out.println("Массив lines: ");
+                for (String str1 : lines) {
+                    System.out.println(str1);
+                }
+                System.out.println("Массив position: ");
+                for (Integer str1 : position) {
+                    System.out.println(str1);
+                }
+
                 /*
                 if (Objects.equals(argsName.get("out"), "stdout")) {
                     System.out.print(scan.next());
@@ -41,6 +61,7 @@ public class CSVReader {
                 }
             }
                  */
+            }
         }
     }
 
