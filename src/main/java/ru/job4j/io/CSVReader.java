@@ -17,37 +17,41 @@ public class CSVReader {
         File target = Path.of(argsName.get("out")).toFile();
 
         try (FileReader fileReader = new FileReader(source);
-             /* var scan = new Scanner(fileReader).useDelimiter(","); */
-             Scanner scanner = new Scanner(fileReader)) {
-             String[] names = scanner.nextLine().replaceAll("\"", "").split(argsName.get("delimiter"));
-             while (scanner.hasNext()) {
+            /* var scan = new Scanner(fileReader).useDelimiter(","); */
+            Scanner scanner = new Scanner(fileReader).useDelimiter(System.lineSeparator())) {
+            String[] names = scanner.nextLine().replaceAll("\"", "").split(argsName.get("delimiter"));
+            while (scanner.hasNext()) {
                 lines.add(scanner.next());
-             }
+            }
 
-            Integer[] position = new Integer[names.length];
+            int[] position = new int[names.length];
+            Arrays.fill(position, -1);
             for (int i = 0; i < names.length; i++) {
                 for (int j = 0; j < filter.length; j++) {
                     if (Objects.equals(names[i], filter[j])) {
-                        position[i] = i;
+                        position[i] = j;
                     }
                 }
+            }
+            System.out.println("filter = " + Arrays.toString(filter));
+            System.out.println("names = " + Arrays.toString(names));
+            System.out.println("lines = " + lines);
+            System.out.println("position = " + Arrays.toString(position));
 
-                System.out.println("Массив filter: ");
-                for (String str1 : filter) {
-                    System.out.println(str1);
+            String[] answer = new String[filter.length];
+            String line = lines.get(0);
+            String[] lines1 = line.replaceAll("\"", "").split(",");
+            for (int i = 0; i < position.length; i++) {
+                for (int j = 0; j < lines1.length; j++) {
+                    if (position[i] != -1) {
+                        answer[position[i]] == lines1[j];
+                    }
                 }
-                System.out.println("Массив names: ");
-                for (String str1 : names) {
-                    System.out.println(str1);
-                }
-                System.out.println("Массив lines: ");
-                for (String str1 : lines) {
-                    System.out.println(str1);
-                }
-                System.out.println("Массив position: ");
-                for (Integer str1 : position) {
-                    System.out.println(str1);
-                }
+            }
+            System.out.println("lines1 = " + Arrays.toString(lines1));
+            System.out.println("answer = " + Arrays.toString(answer));
+
+        }
 
                 /*
                 if (Objects.equals(argsName.get("out"), "stdout")) {
@@ -61,8 +65,7 @@ public class CSVReader {
                 }
             }
                  */
-            }
-        }
+
     }
 
     public static void main(String[] args) throws Exception {
