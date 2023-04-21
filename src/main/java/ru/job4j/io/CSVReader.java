@@ -24,7 +24,7 @@ public class CSVReader {
 
         List<String> lastLines = new ArrayList<>();
 
-        System.out.println(Arrays.toString(filter));
+        System.out.println(argsName.get("filter").replaceAll(",", ";"));
 
         /*
          *  names[] - все возможные фильтры
@@ -64,7 +64,10 @@ public class CSVReader {
                     }
                 }
                 String answer1 = Arrays.toString(answer);
-                lastLines.add(answer1);
+
+                StringJoiner sj = new StringJoiner(";");
+                sj.add(answer1);
+                lastLines.add(sj.toString());
 
                 /*
                 System.out.println("В массивах сейчас: ");
@@ -75,11 +78,14 @@ public class CSVReader {
                 System.out.println("lines1 = " + Arrays.toString(lines1));
                 System.out.println("answer = " + Arrays.toString(answer));
                 System.out.println("answer1 = " + answer1);
-                */
+                 */
+
             }
 
             if (Objects.equals(argsName.get("out"), "stdout")) {
-                System.out.println(lastLines);
+                for (String str : lastLines) {
+                    System.out.println(str);
+                }
             }
             if (!Objects.equals(argsName.get("out"), "stdout")) {
                 try (BufferedOutputStream out =

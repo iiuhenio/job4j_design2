@@ -23,7 +23,7 @@ insert into employees(name, departaments_id) values ('Nikolaev', 2);
 
 insert into employees(name, departaments_id) values ('Stalone', 3);
 
-select * from employees e left join departaments ON departaments.id = e.departaments_id;
+select * from employees e left join departaments on departaments.id = e.departaments_id;
 select * from departaments d right join employees e on d.id = e.departaments_id;
 select * from employees e full join departaments d on e.departaments_id = d.id;
 select * from employees e cross join departaments d;
@@ -31,11 +31,11 @@ select * from employees e cross join departaments d;
 select departaments.name
 from departaments left join employees on departaments_id=departaments.id where employees.name is null;
 
-SELECT e.id, e.name, d.name AS department
-FROM employees AS e LEFT JOIN departaments AS d ON e.departaments_id = d.id;
+select e.id, e.name, d.name as department
+from employees as e left join departaments as d on e.departaments_id = d.id;
 
-SELECT e.id, e.name, d.name AS departaments
-FROM departaments AS d RIGHT JOIN employees AS e ON e.departaments_id = d.id;
+select e.id, e.name, d.name as departaments
+from departaments as d right join employees as e on e.departaments_id = d.id;
 
 create table teens(
 	id serial primary key,
