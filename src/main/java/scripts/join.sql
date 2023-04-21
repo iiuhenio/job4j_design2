@@ -54,4 +54,4 @@ insert into teens(name, gender) values ('Sveta', 'female');
 select m.name, f.name
 from teens m
 cross join teens f
-where m.gender != f.gender;
+where m.gender != f.gender and m.gender = 'male';
