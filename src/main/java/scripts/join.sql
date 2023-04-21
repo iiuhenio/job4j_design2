@@ -28,8 +28,8 @@ select * from departaments d right join employees e on d.id = e.departaments_id;
 select * from employees e full join departaments d on e.departaments_id = d.id;
 select * from employees e cross join departaments d;
 
-select d.name departaments, e.name employees
-from departaments d left join employees e on departaments_id=d.id where e.name is null;
+select departaments.name
+from departaments left join employees on departaments_id=departaments.id where employees.name is null;
 
 SELECT e.id, e.name, d.name AS department
 FROM employees AS e LEFT JOIN departaments AS d ON e.departaments_id = d.id;
