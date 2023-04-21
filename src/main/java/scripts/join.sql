@@ -51,6 +51,7 @@ insert into teens(name, gender) values ('Anna', 'female');
 insert into teens(name, gender) values ('Katya', 'female');
 insert into teens(name, gender) values ('Sveta', 'female');
 
+
 select m.name, f.name
 from teens m
 cross join teens f
