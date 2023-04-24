@@ -32,31 +32,33 @@ VALUES (3, 'packet', 70, date '2019-07-05');
 insert into product (type_id, "name", price, expired_date)
 VALUES (3, 'bottle', 100, date '2023-03-07');
 
-select * from product where type_id = 1;
+select product.name, expired_date, price, type.name from product
+inner join type on type.id = type_id
+where type.name = 'сыр'
 
-select * from product where name like 'мороженое';
+select product.name, expired_date, price, type.name from product
+inner join type on type.id = type_id
+where product.name like 'мороженое';
 
-select * from product where expired_date < '01.09.2022';
+select product.name, expired_date, price, type.name from product
+inner join type on type.id = type_id
+where expired_date < current_date;
 
-select name, price from product where price = (select max(price) from product);
+select type.name, count(type.name) as Количество from product
+inner join type on type.id = type_id
+group by 1
 
-select t.name, count(p.name)
-from product as p
-join type as t
-on p.type_id = t.id
-group by t.name
+select product.name, expired_date, price, type.name from product
+inner join type on type.id = type_id
+where type.name = 'сыр' or type.name = 'молоко'
 
-select * from product where type_id != 2;
+select type.name from product
+inner join type on type.id = type_id
+group by 1
+having count(type.name) < 10
 
-select t.name тип_продукта, COUNT(p.type_id)
-from product p
-inner join type t
-on p.type_id = t.id
-group by t.name
-having COUNT(p.type_id) < 10;
-
-select pp.name, p.name
-from product as pp join type as p on pp.type_id = p.id
+select product.name, type.name from product
+inner join type on type.id = type_id
 
 
 
