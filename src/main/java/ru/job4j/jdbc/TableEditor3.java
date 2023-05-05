@@ -9,88 +9,59 @@ import java.util.StringJoiner;
 
 public class TableEditor3 implements AutoCloseable {
 
-    /**
-     * Файл connection
-     */
     private Connection connection;
 
-    /**
-     * файл Properties
-     */
     private Properties properties;
 
-    /**
-     * Конструктор класса TableEditor
-     * почему в конструкторе вызывается метов?
-     * @param properties
-     */
-    public TableEditor3(Properties properties) {
+    private Statement statement;
+    private String sql;
+
+    public TableEditor3(Properties properties) throws SQLException, ClassNotFoundException {
         this.properties = properties;
         initConnection();
     }
 
-    /**
-     * что Делает этот метод?
-     */
-    private void initConnection() {
-        try (InputStream in = TableEditor3.class.getClassLoader().getResourceAsStream("app3.properties")) {
-            properties.load(in);
+    private void initConnection() throws ClassNotFoundException, SQLException {
             Class.forName(properties.getProperty("driver"));
             String url = properties.getProperty("url");
             String username = properties.getProperty("username");
             String password = properties.getProperty("password");
-            DriverManager.getConnection(url, username, password);
-        } catch (IOException | ClassNotFoundException | SQLException e) {
-            throw new RuntimeException(e);
-        }
-        /* connection = null; */
+            connection = DriverManager.getConnection(url, username, password);
+            statement = connection.createStatement();
     }
 
-    public void createTable(String tableName) {
-            try (Statement statement = connection.createStatement()) {
-                String sql = String.format(
-                        "create table if not exists (%s);",
-                        tableName
-                );
-                statement.execute(sql);
-                System.out.println(getTableScheme(tableName));
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-    }
-
-    public void dropTable(String tableName) {
-        try (Statement statement = connection.createStatement()) {
+    public void createTable(String tableName) throws Exception {
             String sql = String.format(
-                    "drop table (%s);",
+                    "create table if not exists %s();",
                     tableName
             );
             statement.execute(sql);
             System.out.println(getTableScheme(tableName));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
-    public void addColumn(String tableName, String columnName, String type) {
-            try (Statement statement = connection.createStatement()) {
-                String sql = String.format(
-                        "ALTER TABLE (%s) ADD COLUMN (%s) (%s) NULL;",
-                        tableName,
-                        columnName,
-                        type
-                );
-                statement.execute(sql);
-                System.out.println(getTableScheme(tableName));
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+    public void dropTable(String tableName) throws SQLException {
+            String sql = String.format(
+                    "drop table %s;",
+                    tableName
+            );
+            statement.execute(sql);
+    }
+
+    public void addColumn(String tableName, String columnName, String type) throws Exception {
+            String sql = String.format(
+                    "ALTER TABLE %s ADD COLUMN %s %s NULL;",
+                    tableName,
+                    columnName,
+                    type
+            );
+            statement.execute(sql);
+            System.out.println(getTableScheme(tableName));
     }
 
     public void dropColumn(String tableName, String columnName) {
         try (Statement statement = connection.createStatement()) {
             String sql = String.format(
-                    "ALTER TABLE (%s) DROP COLUMN (%s);",
+                    "ALTER TABLE %s DROP COLUMN %s;",
                     tableName,
                     columnName
             );
@@ -101,19 +72,15 @@ public class TableEditor3 implements AutoCloseable {
         }
     }
 
-    public void renameColumn(String tableName, String columnName, String newColumnName) {
-        try (Statement statement = connection.createStatement()) {
+    public void renameColumn(String tableName, String columnName, String newColumnName) throws Exception {
             String sql = String.format(
-                    "ALTER TABLE (%s) RENAME COLUMN (%s) TO (%s);",
+                    "ALTER TABLE %s RENAME COLUMN %s TO %s;",
                     tableName,
                     columnName,
                     newColumnName
             );
             statement.execute(sql);
             System.out.println(getTableScheme(tableName));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public String getTableScheme(String tableName) throws Exception {
@@ -142,12 +109,23 @@ public class TableEditor3 implements AutoCloseable {
         }
     }
 
-    public static void main(String[] args) {
-        File file = new File("c:/data.properties");
-        InputStream in = TableEditor3.class.getClassLoader().getResourceAsStream("app3.properties");
+    public static void main(String[] args) throws IOException {
         Properties pr = new Properties();
-        pr.
-
-        te.createTable("fff");
+        try (InputStream in = TableEditor3.class.getClassLoader().getResourceAsStream("app3.properties")) {
+            pr.load(in);
+            try (TableEditor3 te = new TableEditor3(pr)) {
+                String tableName = "NewTable6";
+                String columnName = "demo_column";
+                String columnType = "text";
+                String newColumnName = "new_demo_column";
+                te.createTable(tableName);
+                te.addColumn(tableName, columnName, columnType);
+                te.renameColumn(tableName, columnName, newColumnName);
+                te.dropColumn(tableName, newColumnName);
+                te.dropTable(tableName);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
